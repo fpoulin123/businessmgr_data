@@ -3,7 +3,7 @@ package com.xpertproject.tools.domain;
 import java.util.Date;
 
 
-public class TransformedCustomer {
+public class TransformedData {
 
 	String firstName;
 	String lastName;
@@ -25,12 +25,12 @@ public class TransformedCustomer {
 	String soldItems;
 	String email;
 	
-	public TransformedCustomer() {
+	public TransformedData() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public TransformedCustomer(String firstName, String lastName, String address, String city, String phoneNumber,
+	public TransformedData(String firstName, String lastName, String address, String city, String phoneNumber,
 			String phoneNumber2, String course, Date inscriptionDate, Integer duration, Date endDate, Double amount,
 			Double account1, Double solde1, Double account2, Double solde2, Double account3, Double solde3,
 			String soldItems, String email) {

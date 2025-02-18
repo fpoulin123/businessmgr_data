@@ -11,17 +11,34 @@ public class DataToSubscriptionProcessor implements ItemProcessor<DataDto, Subsc
 	public Subscription process(DataDto data) throws Exception {
 		// TODO Auto-generated method stub
 		
+		System.out.println(data.toString());
+		
 		Subscription subscription = new Subscription();
+		
+		
+		
 		subscription.setCustomerId(data.getId());
-		subscription.setInscriptionDate(data.getInscriptionDate());
+		subscription.setSubscriptionDate(data.getInscriptionDate());
 		subscription.setAmount(data.getAmount());
 		if("TAEKWONDO".equals(data.getCourse().replace(" ", ""))) {
 			subscription.setTaekwondo(true);
-		}else if("KICKBOXING".equals(data.getCourse().replace(" ", ""))) {
-			subscription.setKickboxing(true);
-		}else if("TAEKIBODO".equals(data.getCourse().replace(" ", ""))) {
-			subscription.setTaekibodo(true);
+		}else {
+			subscription.setTaekwondo(false);
 		}
+			
+			
+		if("KICKBOXING".equals(data.getCourse().replace(" ", ""))) {
+			subscription.setKickboxing(true);
+		}else {
+			subscription.setKickboxing(false);
+		}
+			
+		if("TAEKIBODO".equals(data.getCourse().replace(" ", ""))) {
+			subscription.setTaekibodo(true);
+		}else {
+			subscription.setTaekibodo(false);
+		}
+		
 		subscription.setDuration(data.getDuration());
 		return subscription;
 	}

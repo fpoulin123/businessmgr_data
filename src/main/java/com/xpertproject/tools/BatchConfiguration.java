@@ -1,13 +1,11 @@
 package com.xpertproject.tools;
 
 import java.util.Date;
-import java.util.concurrent.Flow.Subscription;
 
 import javax.sql.DataSource;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
@@ -31,6 +29,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.xpertproject.tools.domain.Customer;
 import com.xpertproject.tools.domain.Data;
+import com.xpertproject.tools.domain.Subscription;
 import com.xpertproject.tools.domain.TransformedData;
 import com.xpertproject.tools.model.DataDto;
 import com.xpertproject.tools.processor.DataItemProcessor;
@@ -100,7 +99,7 @@ public class BatchConfiguration {
 		SubscriptionWriter<Subscription> writer = new SubscriptionWriter<Subscription>();
 		
 		writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
-		writer.setSql("INSERT INTO subscription (customer_id, duration, taekwondo, kickboxing, taekibodo, amount, subscription_date) VALUES (:customerId, :duration, :taekwondo, :kickboxing, :taekibodo, :amount, :inscriptionDate)");
+		writer.setSql("INSERT INTO subscription (customer_id, duration, taekwondo, kickboxing, taekibodo, amount, subscription_date) VALUES (:customerId, :duration, :taekwondo, :kickboxing, :taekibodo, :amount, :subscriptionDate)");
 		writer.setDataSource(dataSource);
 		return writer;
 		

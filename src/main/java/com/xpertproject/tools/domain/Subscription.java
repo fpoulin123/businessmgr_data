@@ -11,7 +11,7 @@ public class Subscription {
 	Boolean kickboxing;
 	Boolean taekibodo;
 	Double amount;
-	Date inscriptionDate;
+	Date subscriptionDate;
 	
 	public Subscription() {
 		super();
@@ -19,7 +19,7 @@ public class Subscription {
 	}
 
 	public Subscription(Long id, Long customerId, Integer duration, Boolean taekwondo, Boolean kickboxing,
-			Boolean taekibodo, Double amount, Date inscriptionDate) {
+			Boolean taekibodo, Double amount, Date subscriptionDate) {
 		super();
 		this.id = id;
 		this.customerId = customerId;
@@ -28,7 +28,7 @@ public class Subscription {
 		this.kickboxing = kickboxing;
 		this.taekibodo = taekibodo;
 		this.amount = amount;
-		this.inscriptionDate = inscriptionDate;
+		this.subscriptionDate = subscriptionDate;
 	}
 
 	public Long getId() {
@@ -87,14 +87,14 @@ public class Subscription {
 		this.amount = amount;
 	}
 
-	public Date getInscriptionDate() {
-		return inscriptionDate;
+	public Date getSubscriptionDate() {
+		return subscriptionDate;
 	}
 
-	public void setInscriptionDate(Date inscriptionDate) {
-		this.inscriptionDate = inscriptionDate;
+	public void setSubscriptionDate(Date subscriptionDate) {
+		this.subscriptionDate = subscriptionDate;
 	}
-	
+
 	
 	
 }

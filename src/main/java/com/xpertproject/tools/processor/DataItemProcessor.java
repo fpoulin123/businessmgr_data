@@ -14,7 +14,7 @@ public class DataItemProcessor implements ItemProcessor<Data,TransformedData>{
 	@Override
 	public TransformedData process(Data data) throws Exception {
 		
-		System.out.println("Trnsforming customer : " + data.getFirstName() + " " + data.getLastName());
+		System.out.println("Transforming customer : " + data.getFirstName() + " " + data.getLastName());
 		// TODO Auto-generated method stub
 		if(data.getFirstName().isEmpty() && data.getLastName().isEmpty())return null;
 		String ph1 = data.getPhoneNumber();
@@ -39,7 +39,7 @@ public class DataItemProcessor implements ItemProcessor<Data,TransformedData>{
 		Date inscriptionDate = null;
 		
 		try {
-			sdf.parse(data.getInscriptionDate());
+			inscriptionDate = sdf.parse(data.getInscriptionDate());
 		}catch (Exception e) {
 			System.out.println("Impossible to parse inscriptionDate : " + e.getMessage());
 		}

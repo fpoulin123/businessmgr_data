@@ -11,21 +11,21 @@ import jakarta.persistence.Table;
 
 public class DataDto {
 	
-	public Long id;
+	Long id;
 	
-	public String firstName;
+	String firstName;
 	
-	public String lastName;
+	String lastName;
 	
-	public String address;
+	String address;
 	
-	public String city;
+	String city;
 	
-	public String phoneNumber;
+	String phoneNumber;
 	
-	public String email;
+	String email;
 	
-	public String picture;
+	String picture;
 	
 	Integer duration;
 	
@@ -230,6 +230,10 @@ public class DataDto {
 
 	public void setSoleItems(String soleItems) {
 		this.soleItems = soleItems;
+	}
+	
+	public String toString() {
+		return this.id.toString() + ", " + this.firstName  + ", " +  this.lastName  + ", " +  (this.inscriptionDate!=null?this.inscriptionDate.toString():"");
 	}
 	
 }

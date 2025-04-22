@@ -29,11 +29,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.xpertproject.tools.domain.Customer;
 import com.xpertproject.tools.domain.Data;
+import com.xpertproject.tools.domain.Payment;
 import com.xpertproject.tools.domain.Subscription;
 import com.xpertproject.tools.domain.TransformedData;
 import com.xpertproject.tools.model.DataDto;
 import com.xpertproject.tools.processor.DataItemProcessor;
 import com.xpertproject.tools.processor.DataToCustomerItemProcessor;
+import com.xpertproject.tools.processor.DataToPaymentAccount1Processor;
 import com.xpertproject.tools.processor.DataToSubscriptionProcessor;
 
 @Configuration
@@ -55,7 +57,7 @@ public class BatchConfiguration {
 	    return new FlatFileItemReaderBuilder<Data>().name("dataItemReader")
 	      .resource(new ClassPathResource(fileInput))
 	      .delimited().delimiter(";")
-	      .names(new String[] {"lastName", "firstName", "address", "city", "phoneNumber","phoneNumber2","course","inscriptionDate","duration","endDate","amount","acount1","solde1", "account2", "solde2", "account3", "solde3","soldItems","email" })
+	      .names(new String[] {"lastName", "firstName", "address", "city", "phoneNumber","phoneNumber2","course","inscriptionDate","duration","endDate","amount","acount1"})
 	      .fieldSetMapper(new BeanWrapperFieldSetMapper<Data>() {{
 	          setTargetType(Data.class);
 	      }})
@@ -76,7 +78,7 @@ public class BatchConfiguration {
 	public JdbcBatchItemWriter<TransformedData> writer(DataSource dataSource) {
 	    return new JdbcBatchItemWriterBuilder<TransformedData>()
 	      .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-	      .sql("INSERT INTO alldata (firstname, lastname, address, city, phonenumber, course, inscriptiondate, duration, amount, account1, solde1, account2, solde2, account3,solde3, email) VALUES (:firstName, :lastName, :address, :city, :phoneNumber, :course, :inscriptionDate, :duration, :amount, :account1, :solde1, :account2, :solde2, :account3, :solde3, :email)")
+	      .sql("INSERT INTO alldata (firstname, lastname, address, city, phonenumber, course, inscriptiondate, duration, amount, account1) VALUES (:firstName, :lastName, :address, :city, :phoneNumber, :course, :inscriptionDate, :duration, :amount, :account1)")
 	      .dataSource(dataSource)
 	      .build();
 	}
@@ -106,13 +108,26 @@ public class BatchConfiguration {
 	}
 	
 	@Bean
-	public Job importUserJob(JobRepository jobRepository, JobCompletionNotificationListener listener, Step step1, Step step2, Step step3) {
+	public PaymentWriter<Payment> jdbcPaymentWriter(DataSource dataSource) {
+		
+		PaymentWriter<Payment> writer = new PaymentWriter<Payment>();
+		
+		writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
+		writer.setSql("INSERT INTO payment (subscription_id, amount, payment_date) VALUES (:subscriptionId, :amount, :paymentDate)");
+		writer.setDataSource(dataSource);
+		return writer;
+		
+	}
+	
+	@Bean
+	public Job importUserJob(JobRepository jobRepository, JobCompletionNotificationListener listener, Step step1, Step step2, Step step3, Step step4) {
 	    return new JobBuilder("importUserJob", jobRepository)
 	      .incrementer(new RunIdIncrementer())
 	      .listener(listener)
 	      .start(step1)
 	      .next(step2)
 	      .next(step3)
+	      .next(step4)
 	      .build();
 	}
 
@@ -147,7 +162,19 @@ public class BatchConfiguration {
 				.build();
 		
 	}
-
+	
+	@Bean
+	public Step step4(JobRepository jobRepository, PlatformTransactionManager transactionManager, PaymentWriter<Payment> writer) {
+		return new StepBuilder("step4", jobRepository)
+				.<DataDto, Payment> chunk(10, transactionManager)
+				.reader(jdbcDataReader())
+				.processor(dataToPaymentAccount1Processor())
+				.writer(writer)
+				.build();
+		
+	}
+	
+	
 	@Bean
 	public DataItemProcessor processor() {
 	    return new DataItemProcessor();
@@ -159,6 +186,10 @@ public class BatchConfiguration {
 	
 	@Bean DataToSubscriptionProcessor dataToSubscriptionProcessor() {
 		return new DataToSubscriptionProcessor();
+	}
+
+	@Bean DataToPaymentAccount1Processor dataToPaymentAccount1Processor() {
+		return new DataToPaymentAccount1Processor();
 	}
 	
 	@Bean

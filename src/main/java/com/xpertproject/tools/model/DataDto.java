@@ -31,23 +31,12 @@ public class DataDto {
 	
 	String course;
 	
-	Date inscriptionDate;
+	String inscriptionDate;
 	
 	Double amount;
 	
 	Double account1;
 	
-	Double solde1;
-	
-	Double account2;
-	
-	Double solde2;
-	
-	Double account3;
-	
-	Double solde3;
-	
-	String soleItems;
 	
 	public DataDto() {
 		super();
@@ -55,7 +44,7 @@ public class DataDto {
 	}
 
 	public DataDto(Long id, String firstName, String lastName, String address, String city, String phoneNumber,
-			String email, String picture, Integer duration, String course, Date inscriptionDate, Double amount,
+			String email, String picture, Integer duration, String course, String inscriptionDate, Double amount,
 			Double account1, Double solde1, Double account2, Double solde2, Double account3, Double solde3,
 			String soleItems) {
 		super();
@@ -72,12 +61,6 @@ public class DataDto {
 		this.inscriptionDate = inscriptionDate;
 		this.amount = amount;
 		this.account1 = account1;
-		this.solde1 = solde1;
-		this.account2 = account2;
-		this.solde2 = solde2;
-		this.account3 = account3;
-		this.solde3 = solde3;
-		this.soleItems = soleItems;
 	}
 
 	public Long getId() {
@@ -160,11 +143,11 @@ public class DataDto {
 		this.course = course;
 	}
 
-	public Date getInscriptionDate() {
+	public String getInscriptionDate() {
 		return inscriptionDate;
 	}
 
-	public void setInscriptionDate(Date inscriptionDate) {
+	public void setInscriptionDate(String inscriptionDate) {
 		this.inscriptionDate = inscriptionDate;
 	}
 
@@ -184,53 +167,6 @@ public class DataDto {
 		this.account1 = account1;
 	}
 
-	public Double getSolde1() {
-		return solde1;
-	}
-
-	public void setSolde1(Double solde1) {
-		this.solde1 = solde1;
-	}
-
-	public Double getAccount2() {
-		return account2;
-	}
-
-	public void setAccount2(Double account2) {
-		this.account2 = account2;
-	}
-
-	public Double getSolde2() {
-		return solde2;
-	}
-
-	public void setSolde2(Double solde2) {
-		this.solde2 = solde2;
-	}
-
-	public Double getAccount3() {
-		return account3;
-	}
-
-	public void setAccount3(Double account3) {
-		this.account3 = account3;
-	}
-
-	public Double getSolde3() {
-		return solde3;
-	}
-
-	public void setSolde3(Double solde3) {
-		this.solde3 = solde3;
-	}
-
-	public String getSoleItems() {
-		return soleItems;
-	}
-
-	public void setSoleItems(String soleItems) {
-		this.soleItems = soleItems;
-	}
 	
 	public String toString() {
 		return this.id.toString() + ", " + this.firstName  + ", " +  this.lastName  + ", " +  (this.inscriptionDate!=null?this.inscriptionDate.toString():"");

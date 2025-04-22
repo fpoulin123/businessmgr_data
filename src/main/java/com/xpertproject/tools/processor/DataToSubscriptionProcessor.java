@@ -1,5 +1,8 @@
 package com.xpertproject.tools.processor;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.batch.item.ItemProcessor;
 
 import com.xpertproject.tools.domain.Subscription;
@@ -15,10 +18,17 @@ public class DataToSubscriptionProcessor implements ItemProcessor<DataDto, Subsc
 		
 		Subscription subscription = new Subscription();
 		
+		SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yy");
+		if(data.getInscriptionDate()!=null&&!data.getInscriptionDate().isEmpty()&&!data.getInscriptionDate().isBlank()) {
+			Date inscriptionDate = inputFormat.parse(data.getInscriptionDate());
+			subscription.setSubscriptionDate(inscriptionDate);
+		}else {
+			subscription.setSubscriptionDate(null);
+		}
 		
 		
 		subscription.setCustomerId(data.getId());
-		subscription.setSubscriptionDate(data.getInscriptionDate());
+		
 		subscription.setAmount(data.getAmount());
 		if("TAEKWONDO".equals(data.getCourse().replace(" ", ""))) {
 			subscription.setTaekwondo(true);

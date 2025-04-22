@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+import org.hibernate.grammars.hql.HqlParser.SubstringFunctionContext;
 import org.springframework.batch.item.ItemProcessor;
 
 import com.xpertproject.tools.domain.Data;
@@ -61,49 +62,49 @@ public class DataItemProcessor implements ItemProcessor<Data,TransformedData>{
 		Double solde3 = 0.0;
 		
 		try {
-			amount=Double.parseDouble(data.getAmount());
+			amount=Double.parseDouble(data.getAmount().replace(" ", "").replace("$",""));
 		}catch (Exception e) {
 			System.out.println("Impossible to parse amount : " + e.getMessage());
 		}
 		
 		try {
-			account1=Double.parseDouble(data.getAccount1());
+			account1=Double.parseDouble(data.getAccount1().replace(" ", "").replace("$",""));
 		}catch (Exception e) {
 			System.out.println("Impossible to parse account1 : " + e.getMessage());
 		}
 		
 		try {
-			solde1=Double.parseDouble(data.getSolde1());
+			solde1=Double.parseDouble(data.getSolde1().replace(" ", "").replace("$",""));
 		}catch (Exception e) {
 			System.out.println("Impossible to parse solde1 : " + e.getMessage());
 		}
 		
 		try {
-			account2=Double.parseDouble(data.getAccount2());
+			account2=Double.parseDouble(data.getAccount2().replace(" ", "").replace("$",""));
 		}catch (Exception e) {
 			System.out.println("Impossible to parse account2 : " + e.getMessage());
 		}
 		
 		try {
-			solde2=Double.parseDouble(data.getSolde2());
+			solde2=Double.parseDouble(data.getSolde2().replace(" ", "").replace("$",""));
 		}catch (Exception e) {
 			System.out.println("Impossible to parse solde2 : " + e.getMessage());
 		}
 		
 		try {
-			account3=Double.parseDouble(data.getAccount3());
+			account3=Double.parseDouble(data.getAccount3().replace(" ", "").replace("$",""));
 		}catch (Exception e) {
 			System.out.println("Impossible to parse account3 : " + e.getMessage());
 		}
 		
 		try {
-			solde3=Double.parseDouble(data.getSolde3());
+			solde3=Double.parseDouble(data.getSolde3().replace(" ", "").replace("$",""));
 		}catch (Exception e) {
 			System.out.println("Impossible to parse solde3 : " + e.getMessage());
 		}
 		
-		transformedData.setFirstName(data.getFirstName());
-		transformedData.setLastName(data.getLastName());
+		transformedData.setFirstName(formatFirstName(data.getFirstName()));
+		transformedData.setLastName(data.getLastName().toUpperCase());
 		transformedData.setAddress(data.getAddress());
 		transformedData.setCity(data.getCity());
 		transformedData.setPhoneNumber(ph1);;
@@ -123,6 +124,18 @@ public class DataItemProcessor implements ItemProcessor<Data,TransformedData>{
 		transformedData.setEmail(data.getEmail());
 		
 		return transformedData;
+	}
+	
+	public String formatFirstName(String firstName) {
+		if(firstName!=null&&!firstName.isEmpty()&&!firstName.isBlank()) {
+			 String majPart = firstName.substring(0,1);
+			 String minPart = firstName.substring(1, firstName.length()-1);
+			
+			 return majPart.toUpperCase() + minPart.toLowerCase();
+		}else {
+			return "";
+		}
+		
 	}
 
 }
